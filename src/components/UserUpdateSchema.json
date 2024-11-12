@@ -1,0 +1,37 @@
+{
+  "title": "",
+  "description": "",
+  "type": "object",
+  "required": ["name", "username"],
+  "properties": {
+    "name": {
+      "title": "Full Name",
+      "fieldId": null,
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z ]*[a-zA-Z]$",
+      "validation": []
+    },
+    "mobileNo": {
+      "title": "Mobile Number",
+      "fieldId": null,
+      "type": "string",
+      "pattern": "^\\d{10}$",
+      "validation": []
+    },
+    "email": {
+      "title": "Email Address",
+      "type": "string",
+      "format": "email",
+      "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$",
+      "validation": ["required"],
+      "shouldSkipDefaultValidation": true
+    },
+    "username": {
+      "title": "Username",
+      "fieldId": null,
+      "type": "string",
+      "validation": []
+    }
+  },
+  "dependencies": {}
+}

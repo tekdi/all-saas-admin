@@ -25,7 +25,14 @@ import {
 } from "@/utils/app.constant";
 import { useLocationState } from "@/utils/useLocationState";
 import useSubmittedButtonStore from "@/utils/useSharedState";
-import { Box, Button, Checkbox, FormControlLabel, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { IChangeEvent } from "@rjsf/core";
 import { RJSFSchema } from "@rjsf/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -50,8 +57,6 @@ interface UserModalProps {
   userType: string;
 }
 
-
-
 const CommonUserModal: React.FC<UserModalProps> = ({
   open,
   onClose,
@@ -61,15 +66,15 @@ const CommonUserModal: React.FC<UserModalProps> = ({
   onSubmit,
   userType,
 }) => {
-  console.log(userType);
   const [schema, setSchema] = React.useState<any>();
   const [uiSchema, setUiSchema] = React.useState<any>();
   const [openModal, setOpenModal] = React.useState(false);
   const [adminInfo, setAdminInfo] = React.useState<any>();
   const [createTLAlertModal, setcreateTLAlertModal] = useState(false);
   const [confirmButtonDisable, setConfirmButtonDisable] = useState(true);
-  const [checkedConfirmation, setCheckedConfirmation] = useState<boolean>(false);
-  
+  const [checkedConfirmation, setCheckedConfirmation] =
+    useState<boolean>(false);
+
   const messageKeyMap: Record<string, string> = {
     [FormContextType.STUDENT]: "LEARNERS.LEARNER_CREATED_SUCCESSFULLY",
     [FormContextType.TEACHER]: "FACILITATORS.FACILITATOR_CREATED_SUCCESSFULLY",
@@ -178,9 +183,8 @@ const CommonUserModal: React.FC<UserModalProps> = ({
     dynamicFormForBlock,
     stateDefaultValue,
     assignedTeamLeader,
-    assignedTeamLeaderNames
+    assignedTeamLeaderNames,
   } = useLocationState(open, onClose, roleType);
-  console.log(assignedTeamLeaderNames)
 
   useEffect(() => {
     const getAddUserFormData = () => {
@@ -193,7 +197,7 @@ const CommonUserModal: React.FC<UserModalProps> = ({
         //   FormContext.USERS,
         //   userType
         // );
-        // console.log("sortedFields", response);
+        //
 
         const response: FormData =
           userType === FormContextType.TEACHER
@@ -201,8 +205,7 @@ const CommonUserModal: React.FC<UserModalProps> = ({
             : userType === FormContextType.STUDENT
               ? studentFormData
               : teamLeaderFormData;
-        //    console.log(studentFormData)
-        console.log(response);
+        //
 
         if (response) {
           if (userType === FormContextType.TEACHER) {
@@ -219,7 +222,6 @@ const CommonUserModal: React.FC<UserModalProps> = ({
             setFormValue(formValues);
             setSchema(schema);
             setUiSchema(uiSchema);
-            console.log("teacher2");
           } else if (userType === FormContextType.TEAM_LEADER) {
             const { schema, uiSchema, formValues } = GenerateSchemaAndUiSchema(
               response,
@@ -227,13 +229,12 @@ const CommonUserModal: React.FC<UserModalProps> = ({
             );
             setFormValue(formValues);
             setSchema(schema);
-            console.log(schema);
+
             setUiSchema(uiSchema);
           } else {
-            console.log("true");
             const { schema, uiSchema } = GenerateSchemaAndUiSchema(response, t);
             setSchema(schema);
-            console.log(schema);
+
             setUiSchema(uiSchema);
           }
         }
@@ -248,18 +249,12 @@ const CommonUserModal: React.FC<UserModalProps> = ({
     data: IChangeEvent<any, RJSFSchema, any>,
     event: React.FormEvent<any>
   ) => {
-    console.log("submitted");
     const target = event?.target as HTMLFormElement;
 
-    console.log("onsubmit", data);
-
-    console.log("Form data submitted:", data.formData);
-
     const formData = data.formData;
-    console.log("Form data submitted:", formData);
+
     const schemaProperties = schema.properties;
 
-    console.log(formData["year of joining scp"]);
     let result;
     if (formData["year of joining scp"]) {
       result = generateUsernameAndPassword(
@@ -297,9 +292,6 @@ const CommonUserModal: React.FC<UserModalProps> = ({
       Object.entries(formData).forEach(([fieldKey, fieldValue]) => {
         const fieldSchema = schemaProperties[fieldKey];
         const fieldId = fieldSchema?.fieldId;
-        console.log(
-          `FieldID: ${fieldId}, FieldValue: ${fieldSchema}, type: ${typeof fieldValue}`
-        );
 
         if (fieldId === null || fieldId === "null") {
           if (typeof fieldValue !== "object") {
@@ -350,7 +342,6 @@ const CommonUserModal: React.FC<UserModalProps> = ({
 
       try {
         if (isEditModal && userId) {
-          console.log("apiBody", apiBody);
           const userData = {
             name: apiBody?.name,
             mobile: apiBody?.mobile,
@@ -358,7 +349,7 @@ const CommonUserModal: React.FC<UserModalProps> = ({
             email: apiBody?.email,
           };
           const customFields = apiBody?.customFields;
-          console.log(customFields);
+
           const object = {
             userData: userData,
             customFields: customFields,
@@ -374,7 +365,7 @@ const CommonUserModal: React.FC<UserModalProps> = ({
           showToastMessage(t(messageKey), "success");
         } else {
           const response = await createUser(apiBody);
-          console.log(response);
+
           if (response) {
             const messageKey = messageKeyMap[userType];
 
@@ -405,7 +396,7 @@ const CommonUserModal: React.FC<UserModalProps> = ({
           }
           let replacements: { [key: string]: string };
           replacements = {};
-          console.log(Object.keys(replacements).length === 0);
+
           if (creatorName) {
             if (userType === FormContextType.STUDENT) {
               replacements = {
@@ -469,7 +460,6 @@ const CommonUserModal: React.FC<UserModalProps> = ({
         }
       } catch (error) {
         onClose();
-        console.log(error);
       }
     }
   };
@@ -484,7 +474,7 @@ const CommonUserModal: React.FC<UserModalProps> = ({
     setCreateFacilitator(false);
     setOpenModal(false);
   };
- 
+
   const handleAction = () => {
     setTimeout(() => {
       setCreateFacilitator(true);
@@ -512,38 +502,31 @@ const CommonUserModal: React.FC<UserModalProps> = ({
     }
   }, [dynamicForm, dynamicFormForBlock, open]);
 
-
   const handleChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedConfirmation(event.target.checked);
-
   };
 
   const wrappedHandleContinueAction = () => {
     handleCloseConfirmation();
-     setOpenModal(true);
-     //onClose();
-
-  
-
-}
+    setOpenModal(true);
+    //onClose();
+  };
 
   const handleCancelAction = async () => {
     // await handleDeleteAction();
     handleCloseConfirmation();
-//setAssignedTeamLeaderNames([]);
-   };
-  const handleCloseConfirmation=  () => {
+    //setAssignedTeamLeaderNames([]);
+  };
+  const handleCloseConfirmation = () => {
     // await handleDeleteAction();
-   // handleCloseConfirmation();
-   setcreateTLAlertModal(false);
-   setCheckedConfirmation(false);
-   setConfirmButtonDisable(true);
- //  setAssignedTeamLeaderNames([]);
+    // handleCloseConfirmation();
+    setcreateTLAlertModal(false);
+    setCheckedConfirmation(false);
+    setConfirmButtonDisable(true);
+    //  setAssignedTeamLeaderNames([]);
+  };
 
-   };
-
-
-   useEffect(() => {
+  useEffect(() => {
     if (checkedConfirmation) {
       setConfirmButtonDisable(false);
     } else {
@@ -554,7 +537,6 @@ const CommonUserModal: React.FC<UserModalProps> = ({
     if (typeof window !== "undefined" && window.localStorage) {
       const admin = localStorage.getItem("adminInfo");
       if (admin) setAdminInfo(JSON.parse(admin));
-      console.log(adminInfo?.email);
     }
   }, []);
   return (
@@ -598,27 +580,25 @@ const CommonUserModal: React.FC<UserModalProps> = ({
               disabled={!submitButtonEnable}
               onClick={() => {
                 setSubmittedButtonStatus(true);
-                console.log(submittedButtonStatus);
-                console.log(noError);
+
                 if (
                   userType !== FormContextType.STUDENT &&
                   !isEditModal &&
                   noError
                 ) {
-                 // setOpenModal(true);
-                 console.log(assignedTeamLeaderNames.length)
-                 if(assignedTeamLeaderNames.length!==0 && userType===FormContextType.TEAM_LEADER)
-                 {
-                    setcreateTLAlertModal(true);
-                                     // setOpenModal(true)
+                  // setOpenModal(true);
 
-                 }
-                 else{
-                  //onClose();
-                  setOpenModal(true)
-                 }
+                  if (
+                    assignedTeamLeaderNames.length !== 0 &&
+                    userType === FormContextType.TEAM_LEADER
+                  ) {
+                    setcreateTLAlertModal(true);
+                    // setOpenModal(true)
+                  } else {
+                    //onClose();
+                    setOpenModal(true);
+                  }
                 }
-                console.log("Submit button was clicked");
               }}
             >
               {!isEditModal ? t("COMMON.CREATE") : t("COMMON.UPDATE")}
@@ -727,52 +707,47 @@ const CommonUserModal: React.FC<UserModalProps> = ({
         }
       />
 
-
-
-
-
-
-
-
-
-<CustomModal
-          width="30%"
-          open={createTLAlertModal}
-          handleClose={handleCloseConfirmation}
-          primaryBtnText={t("COMMON.CONTINUE")}
-          primaryBtnClick={wrappedHandleContinueAction}
-          primaryBtnDisabled={confirmButtonDisable}
-          secondaryBtnText={t("COMMON.CANCEL")}
-          secondaryBtnClick={handleCancelAction}
+      <CustomModal
+        width="30%"
+        open={createTLAlertModal}
+        handleClose={handleCloseConfirmation}
+        primaryBtnText={t("COMMON.CONTINUE")}
+        primaryBtnClick={wrappedHandleContinueAction}
+        primaryBtnDisabled={confirmButtonDisable}
+        secondaryBtnText={t("COMMON.CANCEL")}
+        secondaryBtnClick={handleCancelAction}
+      >
+        <Box
+          sx={{
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            padding: "16px",
+            width: "fit-content",
+            backgroundColor: "#f9f9f9",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
         >
-          <Box
-            sx={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "16px",
-              width: "fit-content",
-              backgroundColor: "#f9f9f9",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            }}
+          <Typography
+            variant="body1"
+            sx={{ marginBottom: "12px", fontWeight: "bold", color: "#333" }}
           >
-            <Typography
-              variant="body1"
-              sx={{ marginBottom: "12px", fontWeight: "bold", color: "#333" }}
-            >
-{assignedTeamLeaderNames.length>1 ?(
+            {assignedTeamLeaderNames.length > 1 ? (
               <>
-               {t('COMMON.MULTIPLE_TEAM_LEADERS_ASSIGNED', { selectedBlockForTL: selectedBlock[0],assignedTeamLeader: assignedTeamLeader})}
-
+                {t("COMMON.MULTIPLE_TEAM_LEADERS_ASSIGNED", {
+                  selectedBlockForTL: selectedBlock[0],
+                  assignedTeamLeader: assignedTeamLeader,
+                })}
               </>
-            ):(<>
-
-              {t('COMMON.SINGLE_TEAM_LEADERS_ASSIGNED', { selectedBlockForTL: selectedBlock[0],assignedTeamLeader: assignedTeamLeader})}
-
-                        </>)
-}
-             
-            </Typography>
-            <Box
+            ) : (
+              <>
+                {t("COMMON.SINGLE_TEAM_LEADERS_ASSIGNED", {
+                  selectedBlockForTL: selectedBlock[0],
+                  assignedTeamLeader: assignedTeamLeader,
+                })}
+              </>
+            )}
+          </Typography>
+          <Box
             sx={{
               border: "1px solid #ddd",
               borderRadius: "8px",
@@ -783,32 +758,31 @@ const CommonUserModal: React.FC<UserModalProps> = ({
               overflowY: "auto",
             }}
           >
-            {assignedTeamLeaderNames.length>1 ?(
-            <>
-             {t('COMMON.ASSIGNED_TEAM_LEADERS', { assignedTeamLeaderNames:assignedTeamLeaderNames[0]})}
-
-            </> 
-
-
-            ):(<>
-              {assignedTeamLeaderNames[0]}
-            </>)
-             
-            }
-         </Box>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checkedConfirmation}
-                  onChange={handleChangeCheckBox}
-                  color="primary"
-                />
-              }
-              label={ t('COMMON.CONTINUE_ASSIGNED_TEAM_LEADER', {selectedBlockForTL: selectedBlock[0]})}
-              sx={{ marginTop: "12px", color: "#555" }}
-            />
+            {assignedTeamLeaderNames.length > 1 ? (
+              <>
+                {t("COMMON.ASSIGNED_TEAM_LEADERS", {
+                  assignedTeamLeaderNames: assignedTeamLeaderNames[0],
+                })}
+              </>
+            ) : (
+              <>{assignedTeamLeaderNames[0]}</>
+            )}
           </Box>
-        </CustomModal>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checkedConfirmation}
+                onChange={handleChangeCheckBox}
+                color="primary"
+              />
+            }
+            label={t("COMMON.CONTINUE_ASSIGNED_TEAM_LEADER", {
+              selectedBlockForTL: selectedBlock[0],
+            })}
+            sx={{ marginTop: "12px", color: "#555" }}
+          />
+        </Box>
+      </CustomModal>
     </>
   );
 };

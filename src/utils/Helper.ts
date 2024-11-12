@@ -45,7 +45,7 @@ export const generateUUID = () => {
 export const getUserName = async (userId: string, fieldValue: boolean = true) => {
   try {
     const userDetails = await getUserDetailsInfo(userId, fieldValue);
-    console.log("userDetails", userDetails);
+    
     return userDetails?.userData?.name; // Accessing the name property from userData
   } catch (error) {
     console.error("Error in fetching user name:", error);
@@ -127,7 +127,7 @@ export const capitalizeFirstLetterOfEachWordInArray = (
   if (!arr) {
     return arr;
   }
-  console.log(arr);
+  
   return arr?.map((str) =>
     str?.replace(/\b[a-z]/g, (char) => char.toUpperCase())
   );
@@ -159,7 +159,7 @@ export const getCurrentYearPattern = () => {
 export const mapFields = (schema: any, Details: any) => {
   let initialFormData: any = {};
 
-  console.log("Details", Details);
+  
 
   Object.entries(schema.properties).forEach(([fieldName, item]: [string, any]) => {
     const getValue = (field: any) => {
@@ -190,7 +190,7 @@ export const mapFields = (schema: any, Details: any) => {
     }
   });
 
-  console.log("initialFormData", initialFormData);
+  
   return initialFormData;
 };
 
