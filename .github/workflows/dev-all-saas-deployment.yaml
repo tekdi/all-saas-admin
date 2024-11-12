@@ -1,8 +1,8 @@
-name: Deployment on the Pratham-dev Frontend Server
+name: Deployment on the All-saas-dev Frontend Server
 on:
   workflow_dispatch:
 jobs:
-  PRATHAM-DEV-DEPLOYMENT:
+  ALL-SAAS-DEV-DEPLOYMENT:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -14,7 +14,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY_DEV }}
           port: ${{ secrets.PORT_DEV }}
           script: |
-            cd ${{ secrets.TARGET_DIR_DEV }}
+            cd ${{ secrets.TARGET_DEV_DIR }}
             if [ -f .env ]; then
             rm .env
             fi
